@@ -5,6 +5,6 @@ var puzzles = Assembly.GetExecutingAssembly().GetTypes().Where(t => t.IsSubclass
 
 foreach (var puzzle in puzzles)
 {
-    Console.WriteLine(puzzle.Part1());
-    Console.WriteLine(puzzle.Part2());
+    Console.WriteLine(puzzle.GetType().Name + " Part 1: " + puzzle.Part1());
+    Console.WriteLine(puzzle.GetType().Name + " Part 2: " +puzzle.Part2());
 }
