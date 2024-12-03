@@ -1,10 +1,10 @@
 ﻿internal abstract class Puzzle
 {
-    protected readonly string[] Data; 
+    protected readonly string Data; 
     
     protected Puzzle()
     {
-        Data = File.ReadAllText($"{GetType().Name}.txt").Split("\n");
+        Data = File.ReadAllText($"{GetType().Name}.txt");
     }
     
     public abstract int Part1();

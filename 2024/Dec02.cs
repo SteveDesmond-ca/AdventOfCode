@@ -8,7 +8,7 @@
 
     public override int Part1()
     {
-        var reports = Data.Where(l => !string.IsNullOrWhiteSpace(l)).ToArray();
+        var reports = Data.Split("\n").Where(l => !string.IsNullOrWhiteSpace(l)).ToArray();
         return reports.Count(IsSafe);
     }
 
@@ -31,7 +31,7 @@
 
     public override int Part2()
     {
-        var reports = Data.Where(l => !string.IsNullOrWhiteSpace(l)).ToArray();
+        var reports = Data.Split("\n").Where(l => !string.IsNullOrWhiteSpace(l)).ToArray();
         return reports.Count(IsSafeWhenDampened);
     }
 

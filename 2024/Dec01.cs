@@ -6,7 +6,7 @@
 
     public override int Part1()
     {
-        var lines = Data.Where(l => !string.IsNullOrWhiteSpace(l)).ToArray();
+        var lines = Data.Split("\n").Where(l => !string.IsNullOrWhiteSpace(l)).ToArray();
         var left = lines.Select(l => int.Parse(l[..5])).OrderBy(l => l).ToArray();
         var right = lines.Select(l => int.Parse(l[5..])).OrderBy(l => l).ToArray();
 
@@ -21,7 +21,7 @@
 
     public override int Part2()
     {
-        var lines = Data.Where(l => !string.IsNullOrWhiteSpace(l)).ToArray();
+        var lines = Data.Split("\n").Where(l => !string.IsNullOrWhiteSpace(l)).ToArray();
         var left = lines.Select(l => int.Parse(l[..5])).ToArray();
         var right = lines.Select(l => int.Parse(l[5..])).ToArray();
         return left.Sum(l => l * right.Count(r => r == l));
