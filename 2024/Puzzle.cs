@@ -4,7 +4,7 @@
     
     protected Puzzle()
     {
-        Data = File.ReadAllText($"{GetType().Name}.txt");
+        Data = File.ReadAllText($"{GetType().Name}.txt").TrimEnd('\n');
     }
     
     public abstract int Part1();
