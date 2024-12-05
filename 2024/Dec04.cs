@@ -3,7 +3,7 @@
     public override int Part1()
     {
         var found = 0;
-        var grid = Data.Split("\n").Where(l => !string.IsNullOrWhiteSpace(l)).Select(l => l.ToArray()).ToArray();
+        var grid = Data.Split("\n").Select(l => l.ToArray()).ToArray();
         for (var row = 0; row < grid.Length; row++)
         {
             for (var col = 0; col < grid[row].Length; col++)
@@ -57,7 +57,7 @@
     public override int Part2()
     {
         var found = 0;
-        var grid = Data.Split("\n").Where(l => !string.IsNullOrWhiteSpace(l)).Select(l => l.ToArray()).ToArray();
+        var grid = Data.Split("\n").Select(l => l.ToArray()).ToArray();
         for (var row = 1; row < grid.Length - 1; row++)
         {
             for (var col = 1; col < grid[row].Length - 1; col++)
