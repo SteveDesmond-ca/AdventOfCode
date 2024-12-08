@@ -1,4 +1,6 @@
-﻿internal sealed class Dec05 : Puzzle
+﻿using System.Collections.Concurrent;
+
+internal sealed class Dec05 : Puzzle
 {
     private readonly byte[][] _rules;
     private readonly byte[][] _pages;
@@ -11,21 +13,22 @@
     }
 
     public override int Part1()
-        => _pages.Where(pageSet => _rules.Where(r => pageSet.Contains(r[0]) && pageSet.Contains(r[1]))
-                .All(rule => PageSetFollowsRule(pageSet, rule)))
-            .Aggregate(0, (current, pageSet) => current + pageSet[pageSet.Length / 2]);
+        => _pages.Where(pageSet => _rules.All(rule => PageSetFollowsRule(pageSet, rule)))
+            .Sum(pageSet => pageSet[pageSet.Length / 2]);
 
-    private static bool PageSetFollowsRule(byte[] pageSet, byte[] rule)
-        => Array.FindIndex(pageSet, p => p == rule[0]) < Array.FindIndex(pageSet, p => p == rule[1]);
+    private static bool PageSetFollowsRule(Span<byte> pageSet, byte[] rule)
+    {
+        var left = pageSet.IndexOf(rule[0]);
+        var right = pageSet.IndexOf(rule[1]);
+        return left == -1 || right == -1 || left < right;
+    }
 
     public override int Part2()
     {
         var sum = 0;
         foreach (var pageSet in _pages)
         {
-            var matchingRules = _rules.Where(r => pageSet.Contains(r[0]) && pageSet.Contains(r[1]))
-                .OrderBy(r => r[0]).ThenBy(r => r[1]).ToArray();
-
+            var matchingRules = _rules.Where(r => pageSet.Contains(r[0]) && pageSet.Contains(r[1])).ToArray();
             if (matchingRules.All(rule => PageSetFollowsRule(pageSet, rule)))
                 continue;
 
@@ -53,10 +56,10 @@
         return corrected;
     }
 
-    private static void SwapPages(byte[] pageSet, byte[] rule)
+    private static void SwapPages(Span<byte> pageSet, byte[] rule)
     {
-        var left = Array.FindIndex(pageSet, p => p == rule[0]);
-        var right = Array.FindIndex(pageSet, p => p == rule[1]);
+        var left = pageSet.IndexOf(rule[0]);
+        var right = pageSet.IndexOf(rule[1]);
         pageSet[left] = rule[1];
         pageSet[right] = rule[0];
     }
