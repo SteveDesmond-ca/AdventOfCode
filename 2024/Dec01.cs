@@ -24,6 +24,7 @@
         var lines = Data.Split("\n");
         var left = lines.Select(l => int.Parse(l[..5])).ToArray();
         var right = lines.Select(l => int.Parse(l[5..])).ToArray();
-        return left.Sum(l => l * right.Count(r => r == l));
+        var counts = right.GroupBy(r => r).ToDictionary(r => r.Key, r => r.Count());
+        return left.Sum(l => l * counts.GetValueOrDefault(l, 0));
     }
 }
