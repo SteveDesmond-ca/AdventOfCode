@@ -7,14 +7,10 @@
     }
 
     public override int Part1()
-    {
-        var reports = Data.Split("\n");
-        return reports.Count(IsSafe);
-    }
+        => Data.Split("\n").Select(GetLevels).Count(IsSafe);
 
-    private static bool IsSafe(string report)
+    private static bool IsSafe(byte[] levels)
     {
-        var levels = report.Split(" ").Select(byte.Parse).ToArray();
         var direction = levels[0] < levels[1] ? Direction.Up : Direction.Down;
 
         for (var x = 1; x < levels.Length; x++)
@@ -30,25 +26,26 @@
     }
 
     public override int Part2()
-    {
-        var reports = Data.Split("\n");
-        return reports.Count(IsSafeWhenDampened);
-    }
+        => Data.Split("\n").Select(GetLevels).Count(IsSafeWhenDampened);
 
-    private static bool IsSafeWhenDampened(string report)
+    private static bool IsSafeWhenDampened(byte[] levels)
     {
-        if (IsSafe(report))
+        if (IsSafe(levels))
             return true;
         
-        var levels = report.Split(" ").Select(byte.Parse).ToArray();
         for (var x = 0; x < levels.Length; x++)
         {
             var dampened = levels.ToList();
             dampened.RemoveAt(x);
-            if (IsSafe(string.Join(" ", dampened)))
+            if (IsSafe(dampened.ToArray()))
                 return true;
         }
 
         return false;
+    }
+
+    private static byte[] GetLevels(string report)
+    {
+        return report.Split(" ").Select(byte.Parse).ToArray();
     }
 }
