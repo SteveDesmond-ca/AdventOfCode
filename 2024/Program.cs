@@ -11,10 +11,10 @@ Console.WriteLine($"Found {puzzles.Length} puzzles ({timer.ElapsedMilliseconds}m
 foreach (var puzzle in puzzles)
 {
     Console.WriteLine();
-    
+
     timer.Restart();
     Console.WriteLine($"{puzzle.GetType().Name} Part 1: {puzzle.Part1()} ({timer.ElapsedMilliseconds}ms)");
-    
+
     timer.Restart();
     Console.WriteLine($"{puzzle.GetType().Name} Part 2: {puzzle.Part2()} ({timer.ElapsedMilliseconds}ms)");
 }

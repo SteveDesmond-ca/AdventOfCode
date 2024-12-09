@@ -1,6 +1,4 @@
-﻿using Position = (int y, int x);
-
-internal sealed class Dec06 : Puzzle
+﻿internal sealed class Dec06 : Puzzle
 {
     private enum Direction
     {
@@ -10,7 +8,7 @@ internal sealed class Dec06 : Puzzle
         Left = 3
     }
 
-    public override int Part1()
+    public override long Part1()
     {
         var map = Data.Split("\n").Select(r => r.ToArray()).ToArray();
         var visited = new byte[map.Length, map[0].Length];
@@ -63,7 +61,7 @@ internal sealed class Dec06 : Puzzle
         return (y, map[y].AsSpan().IndexOf('^'));
     }
 
-    public override int Part2()
+    public override long Part2()
     {
         var originalMap = Data.Split("\n").Select(r => r.ToArray()).ToArray();
         var blockers = new List<Position>();

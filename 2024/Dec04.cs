@@ -1,6 +1,6 @@
 ﻿internal sealed class Dec04 : Puzzle
 {
-    public override int Part1()
+    public override long Part1()
     {
         var found = 0;
         var grid = Data.Split("\n").Select(l => l.ToArray()).ToArray();
@@ -54,7 +54,7 @@
         return found;
     }
 
-    public override int Part2()
+    public override long Part2()
     {
         var found = 0;
         var grid = Data.Split("\n").Select(l => l.ToArray()).ToArray();
