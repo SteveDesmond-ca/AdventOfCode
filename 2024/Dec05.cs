@@ -1,20 +1,13 @@
-﻿using System.Collections.Concurrent;
-
-internal sealed class Dec05 : Puzzle
+﻿internal sealed class Dec05 : Puzzle
 {
-    private readonly byte[][] _rules;
-    private readonly byte[][] _pages;
-
-    public Dec05()
+    public override long Part1()
     {
         var split = Data.Split("\n\n");
-        _rules = split[0].Split("\n").Select(r => r.Split("|").Select(byte.Parse).ToArray()).ToArray();
-        _pages = split[1].Split("\n").Select(p => p.Split(",").Select(byte.Parse).ToArray()).ToArray();
-    }
-
-    public override long Part1()
-        => _pages.Where(pageSet => _rules.All(rule => PageSetFollowsRule(pageSet, rule)))
+        var rules = split[0].Split("\n").Select(r => r.Split("|").Select(byte.Parse).ToArray()).ToArray();
+        var pages = split[1].Split("\n").Select(p => p.Split(",").Select(byte.Parse).ToArray()).ToArray();
+        return pages.Where(pageSet => rules.All(rule => PageSetFollowsRule(pageSet, rule)))
             .Sum(pageSet => pageSet[pageSet.Length / 2]);
+    }
 
     private static bool PageSetFollowsRule(Span<byte> pageSet, byte[] rule)
     {
@@ -25,10 +18,14 @@ internal sealed class Dec05 : Puzzle
 
     public override long Part2()
     {
+        var split = Data.Split("\n\n");
+        var rules = split[0].Split("\n").Select(r => r.Split("|").Select(byte.Parse).ToArray()).ToArray();
+        var pages = split[1].Split("\n").Select(p => p.Split(",").Select(byte.Parse).ToArray()).ToArray();
+        
         var sum = 0;
-        foreach (var pageSet in _pages)
+        foreach (var pageSet in pages)
         {
-            var matchingRules = _rules.Where(r => pageSet.Contains(r[0]) && pageSet.Contains(r[1])).ToArray();
+            var matchingRules = rules.Where(r => pageSet.Contains(r[0]) && pageSet.Contains(r[1])).ToArray();
             if (matchingRules.All(rule => PageSetFollowsRule(pageSet, rule)))
                 continue;
 
