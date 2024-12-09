@@ -4,7 +4,7 @@
     {
     }
 
-    public override int Part1()
+    public override long Part1()
     {
         var lines = Data.Split("\n");
         var left = lines.Select(l => int.Parse(l[..5])).OrderBy(l => l).ToArray();
@@ -19,7 +19,7 @@
         return sum;
     }
 
-    public override int Part2()
+    public override long Part2()
     {
         var lines = Data.Split("\n");
         var left = lines.Select(l => int.Parse(l[..5])).ToArray();

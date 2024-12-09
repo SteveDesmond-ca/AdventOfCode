@@ -12,7 +12,7 @@ internal sealed class Dec05 : Puzzle
         _pages = split[1].Split("\n").Select(p => p.Split(",").Select(byte.Parse).ToArray()).ToArray();
     }
 
-    public override int Part1()
+    public override long Part1()
         => _pages.Where(pageSet => _rules.All(rule => PageSetFollowsRule(pageSet, rule)))
             .Sum(pageSet => pageSet[pageSet.Length / 2]);
 
@@ -23,7 +23,7 @@ internal sealed class Dec05 : Puzzle
         return left == -1 || right == -1 || left < right;
     }
 
-    public override int Part2()
+    public override long Part2()
     {
         var sum = 0;
         foreach (var pageSet in _pages)

@@ -6,7 +6,7 @@
         Down
     }
 
-    public override int Part1()
+    public override long Part1()
         => Data.Split("\n").Select(GetLevels).Count(IsSafe);
 
     private static bool IsSafe(byte[] levels)
@@ -25,7 +25,7 @@
         return true;
     }
 
-    public override int Part2()
+    public override long Part2()
         => Data.Split("\n").Select(GetLevels).Count(IsSafeWhenDampened);
 
     private static bool IsSafeWhenDampened(byte[] levels)
