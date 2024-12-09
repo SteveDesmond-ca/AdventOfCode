@@ -11,33 +11,29 @@
     public override long Part1()
     {
         var map = Data.Split("\n").Select(r => r.ToArray()).ToArray();
-        var visited = new byte[map.Length, map[0].Length];
         var direction = Direction.Up;
         var position = GetStartPosition(map);
-        Position next;
+        var next = position;
 
         do
         {
-            next = GetNextPosition(position, direction);
-            if (WithinBounds(map, next) && map[next.y][next.x] == '#')
+            if (WithinBounds(next, map[0].Length, map.Length) && map[next.y][next.x] == '#')
             {
                 direction = TurnRight(direction);
             }
             else
             {
                 map[position.y][position.x] = 'X';
-                visited[position.y, position.x]++;
                 position = next;
             }
-        } while (WithinBounds(map, next));
+            next = GetNextPosition(position, direction);
+        } while (WithinBounds(position, map[0].Length, map.Length));
 
         return map.Sum(r => r.Count(c => c == 'X'));
     }
 
-    private static bool WithinBounds(char[][] map, Position next)
-    {
-        return next.y >= 0 && next.y < map.Length && next.x >= 0 && next.x < map[0].Length;
-    }
+    private static bool WithinBounds(Position position, int mapWidth, int mapLength)
+        =>  position is { x: >= 0, y: >= 0 } && position.x < mapWidth && position.y < mapLength;
 
     private static Direction TurnRight(Direction direction)
         => (Direction)((int)(direction + 1) % 4);
@@ -63,29 +59,37 @@
 
     public override long Part2()
     {
-        var originalMap = Data.Split("\n").Select(r => r.ToArray()).ToArray();
+        var map = Data.Split("\n").Select(r => r.ToArray()).ToArray();
+        var mapWidth = map[0].Length;
+        var mapLength = map.Length;
+        var start = GetStartPosition(map);
+        var visited = new byte[map.Length, map[0].Length];
         var blockers = new List<Position>();
+        Position previousBlocker = (0, 0);
 
-        for (var y = 0; y < originalMap.Length; y++)
+        //TODO make this not O(n³)
+        for (var y = 0; y < mapLength; y++)
         {
-            for (var x = 0; x < originalMap[y].Length; x++)
+            for (var x = 0; x < mapWidth; x++)
             {
-                var map = Data.Split("\n").Select(r => r.ToArray()).ToArray();
                 if (map[y][x] == '.')
+                {
+                    map[previousBlocker.y][previousBlocker.x] = '.';
+                    previousBlocker = (y, x);
                     map[y][x] = '#';
+                }
                 else
                     continue;
 
-                var visited = new byte[map.Length, map[0].Length];
+                Array.Clear(visited);
                 var direction = Direction.Up;
-                var position = GetStartPosition(map);
-                Position next;
+                var position = start;
+                var next = position;
                 var loopFound = false;
 
-                do
+                while (WithinBounds(next, mapWidth, mapLength) && !loopFound)
                 {
-                    next = GetNextPosition(position, direction);
-                    if (WithinBounds(map, next) && map[next.y][next.x] == '#')
+                    if (map[next.y][next.x] == '#')
                     {
                         direction = TurnRight(direction);
                     }
@@ -99,7 +103,8 @@
 
                         position = next;
                     }
-                } while (WithinBounds(map, next) && !loopFound);
+                    next = GetNextPosition(position, direction);
+                }
             }
         }
 
