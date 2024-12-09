@@ -23,25 +23,23 @@
                 for (var y = 0; y < subtotalsCount; y++)
                 {
                     var subtotal = subtotals[y];
-                    subtotals[y] = DoMath(subtotal, Operators.Plus, operands[x]);
-                    subtotals.Add(DoMath(subtotal, Operators.Times, operands[x]));
+                    subtotals[y] = subtotal + operands[x];
+                    subtotals.Add(subtotal * operands[x]);
                 }
             }
 
-            if (subtotals.Any(sub => sub == solution))
-                sum += solution;
+            sum += subtotals.FirstOrDefault(sub => sub == solution);
         }
 
         return sum;
     }
 
-    private static long DoMath(long left, Operators op, long right)
-        => op switch
+    private static long Concat(long left, long right)
+        => right switch
         {
-            Operators.Plus => left + right,
-            Operators.Times => left * right,
-            Operators.Concatenate => long.Parse(left.ToString() + right),
-            _ => throw new ArgumentOutOfRangeException(nameof(op), op, null)
+            < 10L => 10L * left + right,
+            < 100L => 100L * left + right,
+            _ => 1000L * left + right
         };
 
     public override long Part2()
@@ -60,14 +58,13 @@
                 for (var y = 0; y < subtotalsCount; y++)
                 {
                     var subtotal = subtotals[y];
-                    subtotals[y] = DoMath(subtotal, Operators.Plus, operands[x]);
-                    subtotals.Add(DoMath(subtotal, Operators.Times, operands[x]));
-                    subtotals.Add(DoMath(subtotal, Operators.Concatenate, operands[x]));
+                    subtotals[y] = subtotal + operands[x];
+                    subtotals.Add(subtotal * operands[x]);
+                    subtotals.Add(Concat(subtotal, operands[x]));
                 }
             }
 
-            if (subtotals.Any(sub => sub == solution))
-                sum += solution;
+            sum += subtotals.FirstOrDefault(sub => sub == solution);
         }
 
         return sum;
