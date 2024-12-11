@@ -26,6 +26,7 @@
                 map[position.y][position.x] = 'X';
                 position = next;
             }
+
             next = GetNextPosition(position, direction);
         } while (WithinBounds(position, map[0].Length, map.Length));
 
@@ -33,7 +34,7 @@
     }
 
     private static bool WithinBounds(Position position, int mapWidth, int mapLength)
-        =>  position is { x: >= 0, y: >= 0 } && position.x < mapWidth && position.y < mapLength;
+        => position is { x: >= 0, y: >= 0 } && position.x < mapWidth && position.y < mapLength;
 
     private static Direction TurnRight(Direction direction)
         => (Direction)((int)(direction + 1) % 4);
@@ -64,50 +65,75 @@
         var mapLength = map.Length;
         var start = GetStartPosition(map);
         var visited = new byte[map.Length, map[0].Length];
+        var potentials = WalkMap(map);
         var blockers = new List<Position>();
         Position previousBlocker = (0, 0);
 
+
         //TODO make this not O(n³)
-        for (var y = 0; y < mapLength; y++)
+        foreach (var potential in potentials)
         {
-            for (var x = 0; x < mapWidth; x++)
+            map[previousBlocker.y][previousBlocker.x] = '.';
+            previousBlocker = potential;
+            map[potential.y][potential.x] = '#';
+
+            Array.Clear(visited);
+            var direction = Direction.Up;
+            var position = start;
+            var next = position;
+            var loopFound = false;
+
+            while (WithinBounds(next, mapWidth, mapLength) && !loopFound)
             {
-                if (map[y][x] == '.')
+                if (map[next.y][next.x] == '#')
                 {
-                    map[previousBlocker.y][previousBlocker.x] = '.';
-                    previousBlocker = (y, x);
-                    map[y][x] = '#';
+                    direction = TurnRight(direction);
                 }
                 else
-                    continue;
-
-                Array.Clear(visited);
-                var direction = Direction.Up;
-                var position = start;
-                var next = position;
-                var loopFound = false;
-
-                while (WithinBounds(next, mapWidth, mapLength) && !loopFound)
                 {
-                    if (map[next.y][next.x] == '#')
+                    if (++visited[position.y, position.x] > 4)
                     {
-                        direction = TurnRight(direction);
+                        blockers.Add(potential);
+                        loopFound = true;
                     }
-                    else
-                    {
-                        if (visited[position.y, position.x]++ > 3)
-                        {
-                            blockers.Add((y, x));
-                            loopFound = true;
-                        }
 
-                        position = next;
-                    }
-                    next = GetNextPosition(position, direction);
+                    position = next;
                 }
+
+                next = GetNextPosition(position, direction);
             }
         }
 
         return blockers.Count;
+    }
+
+    private static Position[] WalkMap(char[][] map)
+    {
+        var nexts = new List<Position>();
+
+        var direction = Direction.Up;
+        var position = GetStartPosition(map);
+        var next = position;
+
+        do
+        {
+            var withinBounds = WithinBounds(next, map[0].Length, map.Length);
+            if (withinBounds && map[next.y][next.x] == '.')
+            {
+                nexts.Add(next);
+            }
+            if (withinBounds && map[next.y][next.x] == '#')
+            {
+                direction = TurnRight(direction);
+            }
+            else
+            {
+                position = next;
+            }
+
+            next = GetNextPosition(position, direction);
+        } while (WithinBounds(position, map[0].Length, map.Length));
+
+        return nexts.Distinct().ToArray();
     }
 }
