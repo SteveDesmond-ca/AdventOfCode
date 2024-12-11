@@ -58,9 +58,6 @@
         return checksum;
     }
 
-    private static void Print(long[] drive)
-        => Console.WriteLine(string.Join(" ", drive.Select(d => d > -1 ? d.ToString() : ".")));
-
     public override long Part2()
     {
         var map = Data.Select(c => byte.Parse(c.ToString())).ToArray();
@@ -71,11 +68,13 @@
 
     private static void Defrag(long[] drive, byte[] map)
     {
+        var firstGap = 0;
         for (var fileID = map.Length / 2; fileID > 0; fileID--)
         {
+            FastForward(drive, ref firstGap);
             var end = drive.AsSpan().IndexOf(fileID);
-            var length = GetFileLength(drive[end..], fileID);
-            var start = FindFirstGap(drive[..end], length);
+            var length = GetFileLength(drive, end, fileID);
+            var start = FindFirstGap(drive, firstGap, end, length);
 
             if (start >= end)
                 continue;
@@ -88,27 +87,41 @@
         }
     }
 
-    private static int GetFileLength(long[] span, int fileID)
+    private static void FastForward(long[] drive, ref int firstGap)
     {
-        var x = 0;
-        while (x < span.Length && span[x] == fileID)
-            x++;
-        return x;
+        while (!IsGap(drive, firstGap))
+            firstGap++;
     }
 
-    private static int FindFirstGap(long[] drive, int fileLength)
+    private static int GetFileLength(long[] drive, int start, int fileID)
     {
-        var start = 0;
-        while (start < drive.Length && (drive[start] > -1 || GetGapLength(drive, start) < fileLength))
+        var length = 0;
+        while (start + length < drive.Length && drive[start + length] == fileID)
+            length++;
+        return length;
+    }
+
+    private static int FindFirstGap(long[] drive, int start, int end, int fileLength)
+    {
+        while (start < end && (!IsGap(drive, start) || !CanMoveFileTo(drive, start, fileLength)))
             start++;
         return start;
     }
 
-    private static int GetGapLength(long[] drive, int start)
+    private static bool CanMoveFileTo(long[] drive, int start, int fileLength)
     {
         var length = 0;
         while (start + length < drive.Length && drive[start + length] == -1)
+        {
             length++;
-        return length;
+            if (length >= fileLength)
+                return true;
+        }
+        return false;
+    }
+
+    private static bool IsGap(long[] drive, int position)
+    {
+        return drive[position] == -1;
     }
 }
