@@ -1,12 +1,5 @@
 ﻿internal sealed class Dec07 : Puzzle
 {
-    private enum Operators
-    {
-        Plus = 0,
-        Times = 1,
-        Concatenate = 2
-    }
-
     public override long Part1()
     {
         var lines = Data.Split("\n").ToArray();
