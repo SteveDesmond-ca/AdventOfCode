@@ -4,6 +4,7 @@ using System.Reflection;
 var timer = Stopwatch.StartNew();
 
 var puzzles = Assembly.GetExecutingAssembly().GetTypes().Where(t => t.IsSubclassOf(typeof(Puzzle)))
+    .Where(t => args.Length == 0 || t.Name == $"Dec{args[0]}")
     .Select(Activator.CreateInstance).Cast<Puzzle>().ToArray();
 
 Console.WriteLine($"Found {puzzles.Length} puzzles ({timer.ElapsedMilliseconds}ms)");
