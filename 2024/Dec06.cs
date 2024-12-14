@@ -1,17 +1,9 @@
 ﻿internal sealed class Dec06 : Puzzle
 {
-    private enum Direction
-    {
-        Up = 0,
-        Right = 1,
-        Down = 2,
-        Left = 3
-    }
-
     public override long Part1()
     {
         var map = Data.Split("\n").Select(r => r.ToArray()).ToArray();
-        var direction = Direction.Up;
+        var direction = Direction.North;
         var position = GetStartPosition(map);
         var next = position;
 
@@ -27,7 +19,7 @@
                 position = next;
             }
 
-            next = GetNextPosition(position, direction);
+            next = position.GetNextPosition(direction);
         } while (WithinBounds(position, map[0].Length, map.Length));
 
         return map.Sum(r => r.Count(c => c == 'X'));
@@ -38,16 +30,6 @@
 
     private static Direction TurnRight(Direction direction)
         => (Direction)((int)(direction + 1) % 4);
-
-    private static Position GetNextPosition(Position position, Direction direction)
-        => direction switch
-        {
-            Direction.Up => (position.y - 1, position.x),
-            Direction.Right => (position.y, position.x + 1),
-            Direction.Down => (position.y + 1, position.x),
-            Direction.Left => (position.y, position.x - 1),
-            _ => throw new ArgumentOutOfRangeException(nameof(direction), direction, null)
-        };
 
     private static Position GetStartPosition(char[][] map)
     {
@@ -78,7 +60,7 @@
             map[potential.y][potential.x] = '#';
 
             Array.Clear(visited);
-            var direction = Direction.Up;
+            var direction = Direction.North;
             var position = start;
             var next = position;
             var loopFound = false;
@@ -100,7 +82,7 @@
                     position = next;
                 }
 
-                next = GetNextPosition(position, direction);
+                next = position.GetNextPosition(direction);
             }
         }
 
@@ -111,7 +93,7 @@
     {
         var nexts = new List<Position>();
 
-        var direction = Direction.Up;
+        var direction = Direction.North;
         var position = GetStartPosition(map);
         var next = position;
 
@@ -131,7 +113,7 @@
                 position = next;
             }
 
-            next = GetNextPosition(position, direction);
+            next = position.GetNextPosition(direction);
         } while (WithinBounds(position, map[0].Length, map.Length));
 
         return nexts.Distinct().ToArray();

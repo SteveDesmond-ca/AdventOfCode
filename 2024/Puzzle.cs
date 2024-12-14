@@ -1,5 +1,3 @@
-﻿global using Position = (int y, int x);
-
 internal abstract class Puzzle
 {
     protected readonly string Data; 
