@@ -1,4 +1,6 @@
-﻿internal sealed class Dec02 : Puzzle
+﻿using VTSV.AdventOfCode.Core;
+
+internal sealed class Dec02 : Puzzle
 {
     private enum Direction
     {

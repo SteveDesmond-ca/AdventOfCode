@@ -1,4 +1,6 @@
-﻿internal sealed class Dec01 : Puzzle
+﻿using VTSV.AdventOfCode.Core;
+
+internal sealed class Dec01 : Puzzle
 {
     public Dec01() : base()
     {

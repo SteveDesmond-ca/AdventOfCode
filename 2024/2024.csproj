@@ -7,6 +7,7 @@
         <Nullable>enable</Nullable>
     </PropertyGroup>
     <ItemGroup>
+        <ProjectReference Include="../Core/Core.csproj"/>
         <None Include="Dec*.txt" CopyToOutputDirectory="PreserveNewest"/>
     </ItemGroup>
 </Project>

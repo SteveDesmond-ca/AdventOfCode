@@ -1,4 +1,6 @@
-﻿internal sealed class Dec13 : Puzzle
+﻿using VTSV.AdventOfCode.Core;
+
+internal sealed class Dec13 : Puzzle
 {
     private struct Machine
     {

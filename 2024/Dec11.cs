@@ -1,4 +1,6 @@
-﻿internal sealed class Dec11 : Puzzle
+﻿using VTSV.AdventOfCode.Core;
+
+internal sealed class Dec11 : Puzzle
 {
     public override long Part1()
         => CountStones(25);

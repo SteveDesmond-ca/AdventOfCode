@@ -1,4 +1,6 @@
-﻿internal sealed class Dec16 : Puzzle
+﻿using VTSV.AdventOfCode.Core;
+
+internal sealed class Dec16 : Puzzle
 {
     public override long Part1()
     {

@@ -1,4 +1,5 @@
 ﻿using System.Text.RegularExpressions;
+using VTSV.AdventOfCode.Core;
 
 internal sealed class Dec03 : Puzzle
 {

@@ -1,4 +1,8 @@
-internal abstract class Puzzle
+using System.IO;
+
+namespace VTSV.AdventOfCode.Core;
+
+public abstract class Puzzle
 {
     protected readonly string Data; 
     

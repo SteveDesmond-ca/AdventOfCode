@@ -1,4 +1,6 @@
-﻿internal sealed class Dec14 : Puzzle
+﻿using VTSV.AdventOfCode.Core;
+
+internal sealed class Dec14 : Puzzle
 {
     private static readonly Position Max = (103, 101);
 
