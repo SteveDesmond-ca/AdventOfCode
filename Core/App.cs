@@ -5,9 +5,9 @@ using System.Reflection;
 
 namespace VTSV.AdventOfCode.Core;
 
-public class App
+public static class App
 {
-    public void Run(string arg)
+    public static void Run(string arg)
     {
         var timer = Stopwatch.StartNew();
 
@@ -19,13 +19,20 @@ public class App
 
         foreach (var puzzle in puzzles)
         {
+            var name = puzzle.GetType().Name;
             Console.WriteLine();
 
-            timer.Restart();
-            Console.WriteLine($"{puzzle.GetType().Name} Part 1: {puzzle.Part1()} ({timer.ElapsedMilliseconds}ms)");
+            if (!puzzle.HasData())
+            {
+                Console.WriteLine($"{name} has no data");
+                continue;
+            }
 
             timer.Restart();
-            Console.WriteLine($"{puzzle.GetType().Name} Part 2: {puzzle.Part2()} ({timer.ElapsedMilliseconds}ms)");
+            Console.WriteLine($"{name} Part 1: {puzzle.Part1()} ({timer.ElapsedMilliseconds}ms)");
+
+            timer.Restart();
+            Console.WriteLine($"{name} Part 2: {puzzle.Part2()} ({timer.ElapsedMilliseconds}ms)");
         }
     }
 }

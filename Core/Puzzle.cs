@@ -1,4 +1,4 @@
-using System.IO;
+using System.IO.Abstractions;
 
 namespace VTSV.AdventOfCode.Core;
 
@@ -6,10 +6,18 @@ public abstract class Puzzle
 {
     protected readonly string Data; 
     
-    protected Puzzle()
+    protected Puzzle() : this(new FileSystem())
     {
-        Data = File.ReadAllText($"{GetType().Name}.txt").TrimEnd('\n');
     }
+
+    private Puzzle(IFileSystem fs)
+    {
+        var filename = $"{GetType().Name}.txt";
+        if (fs.File.Exists(filename))
+            Data = fs.File.ReadAllText(filename).TrimEnd('\n');
+    }
+
+    public bool HasData() => !string.IsNullOrWhiteSpace(Data);
     
     public abstract long Part1();
     public abstract long Part2();
