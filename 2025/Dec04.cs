@@ -1,6 +1,4 @@
-﻿global using Position = (int y, int x);
-
-using VTSV.AdventOfCode.Core;
+﻿using VTSV.AdventOfCode.Core;
 
 internal sealed class Dec04 : Puzzle
 {
